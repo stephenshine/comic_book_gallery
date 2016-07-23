@@ -11,6 +11,7 @@ namespace ComicBookGallery.Controllers
     {
         public ActionResult Detail()
         {
+            //Creates instance of ComicBook
             var comicBook = new ComicBook()
             {
                 SeriesTitle = "The Amazing Spider-Man",
@@ -25,7 +26,6 @@ namespace ComicBookGallery.Controllers
                     new Artist() { Name = "Chris Eliopoulos", Role = "Letters" },
                 }
             };
-  
 
             //Goes out to run ComicBooks.cs
             return View(comicBook);

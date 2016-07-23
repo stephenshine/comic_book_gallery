@@ -1,4 +1,5 @@
-﻿using ComicBookGallery.Models;
+﻿using ComicBookGallery.Data;
+using ComicBookGallery.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,24 @@ namespace ComicBookGallery.Controllers
 {
     public class ComicBooksController : Controller
     {
-        public ActionResult Detail()
+        private ComicBookRepository _comicBookRepository = null;
+
+        public ComicBooksController()
         {
-            //Creates instance of ComicBook
-            var comicBook = new ComicBook()
+            _comicBookRepository = new ComicBookRepository();
+        }
+
+        //int? makes argument nullable (optional)
+        public ActionResult Detail(int? id)
+        {
+            //returns 404 error if input is null
+            if (id == null)
             {
-                SeriesTitle = "The Amazing Spider-Man",
-                IssueNumber = 700,
-                DescriptionHtml = "<p>Final issue! Witness the final hours of Doctor Octopus' life and his one, last, great act of revenge! Even if Spider-Man survives... <strong>will Peter Parker?</strong></p>",
-                Artists = new Artist[]
-                {
-                    new Artist() { Name = "Dan Slott", Role = "Script"},
-                    new Artist() { Name = "Humberto Ramos", Role = "Pencils" },
-                    new Artist() { Name = "Victor Olazaba", Role = "Inks" },
-                    new Artist() { Name = "Edgar Delgado", Role = "Colours" },
-                    new Artist() { Name = "Chris Eliopoulos", Role = "Letters" },
-                }
-            };
+                return HttpNotFound();
+            }
+
+            //need to use id.Value to get at value in an optional attribute
+            var comicBook = _comicBookRepository.GetCommicBook(id.Value);
 
             //Goes out to run ComicBooks.cs
             return View(comicBook);
